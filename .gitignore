@@ -101,3 +101,6 @@ avr-toolchain-*.zip
 manifest.mf
 nbbuild.xml
 nbproject
+
+build/
+.vscode/

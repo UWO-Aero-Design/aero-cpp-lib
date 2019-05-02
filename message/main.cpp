@@ -1,5 +1,5 @@
 // #include "Message.hpp"
-#include "MessageFormatter.hpp"
+#include "Message.hpp"
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -8,44 +8,23 @@
 
 int main(int argc, char const *argv[])
 {
-    MessageHandler messageHandler;
+    using namespace aero;
 
-    IMU imu;
-    imu.ax = 10;
-    imu.ay = 100;
-    imu.az = 1000;
+    Message messageHandler;
+
+    IMU imu = {10, -12212, 131};
+    Status status = { 1234, 992 };
+
+    messageHandler.add_imu( imu );
+    messageHandler.add_status( status );
     
-//     struct __attribute__((__packed__)) Status
-// {
-//     int16_t rssi;        // Signal strength
-//     uint32_t state;      // State bit fields
-// };
-
-
-    messageHandler.set_imu( imu );
-    RawMessage message;
-
-
-    // for(int i = 0; i < 256; ++i)
-    // {
-    //     std::cout << std::hex << (int) message.buffer[i] << " ";
-    // }
-    // std::cout << std::endl;
-
-
-    message = messageHandler.build( ID::G1, ID::G2 );
-    // std::cout << (message.signature);
-
-    // for(int i = 0; i < 256; ++i)
-    // {
-    //     std::cout << std::hex << (int) message.buffer[i] << " ";
-    // }
-
-    // DEBUG THIS. BUILD SEGFAULTS
+    RawMessage message = messageHandler.build( ID::G1, ID::G2 );
     ParsedMessage parsed = messageHandler.parse ( (uint8_t *) &message );
 
+    IMU *imuu = ( reinterpret_cast<IMU*>( parsed.segments[ static_cast<int>(Signature::IMU) ] ) );
+    Status *statuss = ( reinterpret_cast<Status*>( parsed.segments[ static_cast<int>(Signature::Status) ] ) );
+    std::cout << "Parsed: " << imuu->ay << " " << statuss->rssi;
 
-    std::cout << "Parsed: " << (( IMU * ) parsed.segments[ static_cast<int>(Signature::IMU) ])->ay;
     return 0;
 }
 

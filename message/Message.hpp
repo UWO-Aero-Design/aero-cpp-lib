@@ -1,203 +1,154 @@
-#pragma once
+#ifndef MESSAGE_HPP
+#define MESSAGE_HPP
 
-#include <vector>
-#include <cstdint>
-#include <cmath>
-#include <iostream>
+#if defined(ARDUINO)
+    #include "Arduino.h"
+#else
+    #include <cstddef>
+#endif
 
 #include "Data.hpp"
 
-struct Message
+namespace aero
 {
-    uint8_t start;       // Start byte for serial transfer
-    uint16_t link;       // Link describes the connection the message is trying to bridge. Sender --> Recipient
-    uint16_t signature; // Bits for determining what data is being sent
 
-    uint8_t buffer[256];    // Actual data. Max size
-
-    uint16_t crc;        // Try fast crc
-    uint8_t end;         // End byte for serial transfer
-};
-
-// If we can get vector in teensy, we could scan through the signatures and then push_back every selected signature (deque)
-// Then pop from front and memcpy 
-
-// Parse and builds. Cant do both with the same object?
-// Have struct of structs that MessageHandle copies into too
-
-
-class MessageBuilder
+/**
+ * @brief Class used to build and parse buffer-based messages
+ */
+class Message
 {
 public:
-    MessageBuilder()
-    {
-        // Default struct
-        msg = {};
-        // test = {};
-        test = {};
-    }
-
-    MessageBuilder& AddToBuffer(DataSignatures signature, const char* data)
-    {
-        // Sets the signature flag
-        uint16_t temp_signature = 1 << static_cast<unsigned int>( signature );
+    /**
+     * @brief Construct a new Message object
+     */
+    Message( void );
     
-        // Do the whole switch statement thing here
-        //SetData( temp_signature, data );
+    /**
+     * @brief Add pitot data to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_pitot( const Pitot& data );
+    
+    /**
+     * @brief Add IMU data to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_imu( const IMU& data );
 
-        buffers.at(signature) = (uint8_t *) data);
-        msg.signature |= temp_signature;
-        return *this;
-    }
+    /**
+     * @brief Add GPS data to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_gps ( const GPS& data );
 
-    Message build()
-    {
-        // Check our set signatures
-        // If signature set, copy in approriate data buffer
-        // Calculate checksum
-        // Reset length for next build
+    /**
+     * @brief Add environmental sensor data to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_enviro( const Enviro& data );
 
-        std::cout << "Signature: " << msg.signature << std::endl;
+    /**
+     * @brief Add battery data to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_battery( const Battery& data );
 
-        packets.test0 = ( Test0 * ) test[0];
+    /**
+     * @brief Add config data to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_config( const Config& data );
 
-        // if(test[1] == NULL)
-        // {
-        //     std::cout << "seg";
-        // }
-        //std::cout << (( Test0 * ) test[1])->num;
-        std::cout << packets.test0->num << " " << packets.test0->letter << std::endl;
-        
-        int signatures = msg.signature;
-        for( int i = 0; i < 16; ++i )
-        {
-            if ( signatures & 1 )
-            {
-                //len += parse( msg.buffer, i );
-                //std::cout << "Len: " << len << std::endl;
-            }
-            
-            signatures >>= 1;
-        }
+    /**
+     * @brief Add status information to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_status( const Status& data );
 
-        test[0] = nullptr;
-        return msg;
-    }
+    /**
+     * @brief Add actuator definition to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_actuators( const Actuators& data );
+
+    /**
+     * @brief Add air data to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_airdata( const AirData& data );
+
+    /**
+     * @brief Add commands to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_cmds( const Commands& data );
+
+    /**
+     * @brief Add drop algorithm results to the message buffer
+     * 
+     * @param data struct object to add to the message buffer
+     * @return Message& reference to self for builder pattern
+     */
+    Message& add_drop( const DropAlgo& data );
+
+    /**
+     * @brief Used to build a message with data buffer based on builder functions
+     * 
+     * @param from who the message is from
+     * @param to who the message is for
+     * @param clear true if you want to clear the old message buffer after building
+     * @return RawMessage built message
+     */
+    RawMessage build( ID from, ID to, bool clear = false);
+
+    /**
+     * @brief Check if a uint8_t* buffer is a valid message based on size and check sum
+     * 
+     * @param message unvalidated buffer
+     * @return true if buffer is a valid message
+     * @return false if buffer is an invalid message
+     */
+    bool validate( const uint8_t* message );
+
+    /**
+     * @brief Takes a valid buffer and parses the data into a struct
+     * 
+     * @param message valid buffer to be parsed
+     * @return ParsedMessage parsed message 
+     */
+    ParsedMessage parse( const uint8_t* message );
+
+protected:
 private:
-    void SetData( int signature, const char* data )
-    {   
-        int bit = log2(signature);
-        DataSignatures ss = static_cast< DataSignatures > ( bit );
+    // Private helper functions
+    void set( Signature buf_segment, uint8_t* data );
+    uint8_t segment_size( Signature buf_segment );
+    uint16_t chk_sum( const RawMessage& message );
 
-        switch (  ss )
-        {
-            case DataSignatures::Test0:
-            {
-                std::cout << "Test" << " ";
-                packets.test0 = ( Test0 * ) data;
-
-                test.insert(test.begin() + 0, (uint8_t *) data) ;
-            } break;
-            case DataSignatures::Test11:
-            {
-                std::cout << "TestData" << " ";
-                // return (int) sizeof(struct Test11);
-            } break;
-            default:
-            {
-                std::cout << "Undefined" << " ";
-                // return 0;
-            } break;
-                
-        } 
-    } 
-
-    Message msg;
-    uint16_t len;
-    PacketTypes packets;
-
-    std::vector<uint8_t*> test;
+    // Array to store each struct as buffer segments
+    uint8_t* buffer_segments[12];
 };
 
+} // End of namespace aero
 
-
-
-
-
-// Steps on how to add a new data parsing case
-// 1. Add the new data structure you want to parse into
-// 2. Add the member variable that the results will be stored into message handler
-// 3. Add unique data signanture into the enum that represents the bit location
-// 4. Add the switch case to memcpy the buffer in
-
-
-class MessageHandle
-{
-public:
-    MessageHandle( Message msg )
-    {
-        
-        int structs = msg.signature;
-        int len = 0;
-
-        for(int i = 0; i < 16; ++i)
-        {
-            int bit = ( structs & 1 );
-            structs >>= 1;
-
-            // Check if bit i is set
-            if (bit)
-            {
-                len += parse( msg.buffer, i );
-                std::cout << "Len: " << len << std::endl;
-            }
-        }
-    }
-
-private:
-    int parse( uint8_t* buffer, int s )
-    {
-        DataSignatures ss = static_cast< DataSignatures > ( s );
-        switch (  ss )
-        {
-            case DataSignatures::Test0:
-            {
-                std::cout << "Test" << " ";
-                return (int) sizeof(struct Test0);
-            } break;
-            case DataSignatures::Test11:
-            {
-                std::cout << "TestData" << " ";
-                return (int) sizeof(struct Test11);
-            } break;
-            default:
-            {
-                std::cout << "Undefined" << " ";
-                return 0;
-            } break;
-                
-        }
-    }
-};
-
-
-
-
-
-// Receive message BUF
-
-// Message_t data = (Message_t) BUF
-// MessageHandle( data )
-// MessageHandle.imu().roll
-
-
-
-
-
-
-
-
-
-
-
-
+#endif // MESSAGE_HPP

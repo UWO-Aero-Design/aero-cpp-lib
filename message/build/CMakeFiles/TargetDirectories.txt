@@ -1,3 +1,0 @@
-/home/administrator/SHARE/SHARE/code/aero/message/build/CMakeFiles/rebuild_cache.dir
-/home/administrator/SHARE/SHARE/code/aero/message/build/CMakeFiles/main.dir
-/home/administrator/SHARE/SHARE/code/aero/message/build/CMakeFiles/edit_cache.dir
