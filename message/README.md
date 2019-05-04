@@ -1,0 +1,1 @@
+Aero communication protocol written in C++ that can be used generically

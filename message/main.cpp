@@ -4,9 +4,10 @@
 #include <cstring>
 #include <iostream>
 
+// For getopt
+#include "unistd.h"
 
-
-int main(int argc, char const *argv[])
+int main(int argc, char **argv)
 {
     using namespace aero;
 
