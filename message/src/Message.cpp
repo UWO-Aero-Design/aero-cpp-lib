@@ -169,9 +169,9 @@ ParsedMessage Message::parse( const uint8_t* message )
     // Message to parse result into
     ParsedMessage result;
 
-    // Set from and to values. TODO: Set these by extracting top byte and lower byte
-    result.m_from = ID::G2;
-    result.m_to = ID::G1;
+    // Set from and to values.
+    result.m_from = (static_cast< ID >( ( msg->link >> 8)  ) ); // Extract upper byte
+    result.m_to = (static_cast< ID >( msg->link & 0xFF ) );     // Extract lower byte
 
     int signature = msg->signature;
     int length = 0;
