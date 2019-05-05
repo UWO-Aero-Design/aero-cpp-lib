@@ -65,11 +65,26 @@ struct __attribute__((__packed__)) IMU
     int16_t ax;
     int16_t ay;
     int16_t az;
+    int16_t gx;
+    int16_t gy;
+    int16_t gz;
+    int16_t mx;
+    int16_t my;
+    int16_t mz;
+    int16_t yaw;
+    int16_t pitch;
+    int16_t roll;
 };
 
 struct __attribute__((__packed__)) GPS
 {
-    int32_t coordinates[2];
+    int32_t lat;
+    int32_t lon;
+    uint16_t speed;
+    uint8_t satellites;
+    uint16_t altitude;
+    uint32_t time;  // 4 BYTES. XX HR MIN SEC
+    uint32_t date;  // 4 BYTES. XX YR MNTH DAY
 };
 
 struct __attribute__((__packed__)) Enviro
@@ -96,12 +111,28 @@ struct __attribute__((__packed__)) Status
     uint32_t state;      // State bit fields
 };
 
-struct __attribute__((__packed__)) Actuators
+// HIGH BYTE is MAX, LOW BYTE is MIN. 
+struct __attribute__((__packed__)) Servos
 {
-    int16_t servo_min[16];
-    int16_t servo_max[16];
+    uint16_t servo0;
+    uint16_t servo1;
+    uint16_t servo2;
+    uint16_t servo3;
+    uint16_t servo4;
+    uint16_t servo5;
+    uint16_t servo6;
+    uint16_t servo7;
+    uint16_t servo8;
+    uint16_t servo9;
+    uint16_t servo10;
+    uint16_t servo11;
+    uint16_t servo12;
+    uint16_t servo13;
+    uint16_t servo14;
+    uint16_t servo15;
 };
 
+// Pretty much all we need to send back is AirData in terms of telemetry
 struct __attribute__((__packed__)) AirData
 {
     float ias;
