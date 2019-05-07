@@ -12,11 +12,21 @@
     #include <cmath>
 #endif
 
+/*!
+ *  \addtogroup aero
+ *  @{
+ */
 
+//! Aero library code
 namespace aero
 {
 
-// Binary-level helper functions
+/*!
+ *  \addtogroup bit
+ *  @{
+ */
+
+//! Binary-level helper functions
 namespace bit
 {
     /**
@@ -38,47 +48,74 @@ namespace bit
         } source, dest;
 
         // Apply union to input value
-        source.to_swap = to_swap
+        source.to_swap = to_swap;
 
         for( size_t k = 0; k < sizeof( T ); ++k)
-            desk.u8[k] = source.u8[ sizeof( T ) - k - 1];
+            dest.u8[k] = source.u8[ sizeof( T ) - k - 1];
 
         return dest.to_swap;
     }
 
-    // Set bit index in value bit
-    int set( int bit, unsigned int index )
+    /**
+     * @brief Set a bit
+     * 
+     * @param value Value to set a bit in
+     * @param index Position of bit you want to set
+     * @return int Value with bit at index set
+     */
+    int set( int value, unsigned int index )
     {
-        return ( bit | ( 1 << index ) );
+        return ( value | ( 1 << index ) );
     }
 
-    // Read bit at index in value bit
-    uint8_t read( int bit, unsigned int index )
+    /**
+     * @brief Read a bit
+     * 
+     * @param value Value to read a bit from
+     * @param index Position of bit you want to read
+     * @return uint8_t Value of bit at position index in value
+     */
+    uint8_t read( int value, unsigned int index )
     {
-        return ( ( bit >> index ) & 0x01 );
+        return ( ( value >> index ) & 0x01 );
     }
 
-    // Clear bit at index in value bit
-    // Returns the value with the bit cleared
-    int clear( int bit, unsigned int index )
+    /**
+     * @brief Clear a bit
+     * 
+     * @param value Value to clear a bit in
+     * @param index Position of bit you want to clear
+     * @return int Value with bit at index cleared
+     */
+    int clear( int value, unsigned int index )
     {
-        return ( bit & ~( 1 << index ) );
+        return ( value & ~( 1 << index ) );
     }
 
-    // Toggle bit at index
-    int toggle( int bit, unsigned int index )
+    /**
+     * @brief Toggle a bit
+     * 
+     * @param value Value to toggle a bit in
+     * @param index Position of bit you want to toggle
+     * @return int Value with bit at index toggled
+     */
+    int toggle( int value, unsigned int index )
     {
-        return ( bit ^ ( 0x01 << index ) );
+        return ( value ^ ( 0x01 << index ) );
     }
-} 
+} // End of namespace bit
 
-// Data conversion helper functions
-namespace convert
+/*! @} End of Doxygen Groups*/
+
+/*!
+ *  \addtogroup convert
+ *  @{
+ */
+
+//! Data conversion helper functions
+namespace convert // Credit goes to github.com/bolderflight/AirData
 {
-    // Credit for most of the conversion functions comes from github.com//bolderflight/AirData
-
-    // Anonymous namespace to keep these constants hidden
-    // May need to move these to a place where they are more accessible cause could be needed in other modules
+    // Namespace constants
     namespace
     {
         const static float gravity = 9.807f;            // Acceleration caused by gravity       [ m/s^2 ]
@@ -90,106 +127,151 @@ namespace convert
         const static float air_mass = 0.02895f;          // Molecular mass of air                [ kg/mol ]
     }
 
+    /**
+     * @brief Units for metric conversion
+     */
     enum class Unit { n, u, m, base, k, M, G };
+
+    /**
+     * @brief Convert a value to a new metric prefix
+     * 
+     * @details A metric prefix is like centi or milli or kilo. So use this function
+     *          to change from, for example, metres to kilometres, very easily
+     * 
+     * @param value Value you want to change
+     * @param src Unit the value currently has
+     * @param dest Unit you want the value to have
+     * @return float Value with new metric prefix
+     */
     float metric( float value, Unit src, Unit dest )
     {
         int exponent = static_cast< int >( dest ) - static_cast< int >( src );
         return value * powf( 1000.0f, exponent );
     }
 
-    enum class Temperature { K, C, F };
-    // Very lazy solution to this problem
-    // Problaby best to convert all inputs to SI then convert to destination
-    float temperature( float t, Temperature src, Temperature dest )
-    {
-        if ( src == dest )
-            return t;
-
-        switch (src)
-        {
-            case Temperature::K:
-            {
-                if( dest == Temperature::C )
-                    return ( t - 273.15 );
-                if( dest == Temperature::F )
-                    return ( t - 459.67 );
-            } break;
-            case Temperature::C:
-            {
-                if( dest == Temperature::K )
-                    return ( t + 273.15 );
-                if( dest == Temperature::F )
-                    return ( ( t * ( 9.0f/5.0f ) ) + 32.0f );
-            } break;
-            case Temperature::F:
-            {
-                if( dest == Temperature::K )
-                    return ( t + 459.67 );
-                if( dest == Temperature::C )
-                    return ( ( t - 32.0f ) * ( 5.0f/9.0f ) );
-            } break;        
-        }
-    }
-
-    // Calcultes indicated air speed. diff_pressure in Pa
+    /**
+     * @brief Calculates indicated airspeed in m/s 
+     * 
+     * @param diff_pressure Differential pressure in Pa
+     * @return float Resulting indicated air speed
+     */
     float ind_as( float diff_pressure )
     {
         return (sl_sound_speed * sqrtf( 5.0f * ( powf( ( ( sl_pressure / sl_pressure ) + 1.0f ), ( 2.0f/7.0f ) ) - 1.0f ) ) );
     }
 
-    // Calculates equivalent air speed given. pressure in Pa
-    float equiv_as( float qc, float p ) 
+    /**
+     * @brief Calculates equivalent air speed in m/s
+     * 
+     * @param diff_pressure Differential pressure in Pa
+     * @param pressure Static pressure in Pa
+     * @return float Resulting equivalent air speed
+     */
+    float equiv_as( float diff_pressure, float pressure ) 
     {
-        return sl_sound_speed * sqrtf(5.0f*p/sl_pressure*(powf((qc/p + 1.0f),(2.0f/7.0f)) - 1.0f));
+        return sl_sound_speed * sqrtf(5.0f*pressure/sl_pressure*(powf((diff_pressure/pressure + 1.0f),(2.0f/7.0f)) - 1.0f));
     }
 
-    // Calculate true air speed with IAS or EAS and temperature in Kelvin
-    float true_as( float AS, float T ) 
+    /**
+     * @brief Calculates true air speed in m/s
+     * 
+     * @param airspeed Either indicated or equivalent airspeed in m/s 
+     * @param temperature Air temperature in Celsuis
+     * @return float Resulting equivalent true air speed 
+     */
+    float true_as( float airspeed, float temperature ) 
     {
-        return AS * sqrtf((T+273.15f)/sl_temperature);
+        return airspeed * sqrtf((temperature+273.15f)/sl_temperature);
     }
 
-    // Calculate pressure altitude. pressure in Pa
-    // Altitude is altitude based on standard atmosphere
-    float pressure_altitude(float p) 
+    /**
+     * @brief Calculates pressure altitude in m
+     * 
+     * @param pressure Static Pressure in Pa
+     * @return float Resulting pressure altitude
+     */
+    float pressure_altitude( float pressure ) 
     {
-        return (sl_temperature/lapse)*(1.0f - powf((p/sl_pressure),((lapse*gas_const)/(air_mass*gravity))));
+        return (sl_temperature/lapse)*(1.0f - powf((pressure/sl_pressure),((lapse*gas_const)/(air_mass*gravity))));
     }
 
-    // Calculates altitude Above Ground Level (AGL) given static pressure and a bias
-    float above_gnd_altitude(float p, float c) 
+    /**
+     * @brief Calculates above ground level in m given an offet
+     * 
+     * @param pressure Static pressure in Pa
+     * @param offset Level offset in m
+     * @return float Resulting above ground level altitude in m
+     */
+    float above_gnd_altitude( float pressure, float offset ) 
     {
-        return pressure_altitude(p) - c;
+        return pressure_altitude( pressure ) - offset;
     }
 
-    /* computes altitude above Mean Sea Level (MSL) given AGL and starting altitude */
-    float mean_sl_altitude(float H, float h) 
+    /**
+     * @brief Calcualtes altitude above mean sea level in m
+     * 
+     * @param agl above ground level altitude in m
+     * @param start_alt Start altitude of flight in m
+     * @return float Resulting mean sea level altitude
+     */
+    float mean_sl_altitude( float agl, float start_alt ) 
     {
-        return H + h;
+        return agl + start_alt;
     }
 
-    /* computes density altitude given static pressure and temperature */
-    float density_altitude(float p, float T) 
+    /**
+     * @brief Calculates density altitude in m which is based on standard atmosphere
+     * 
+     * @param pressure Static pressure in Pa
+     * @param temperature Temperature in Celsius
+     * @return float Resulting density altitude
+     */
+    float density_altitude( float pressure, float temperature ) 
     {
-        return (sl_temperature/lapse)*(1.0f - powf(((p/sl_pressure)*(sl_temperature/(T+273.15f))),((lapse*gas_const)/(air_mass*gravity - lapse*gas_const))));
+        return (sl_temperature/lapse)*(1.0f - powf(((pressure/sl_pressure)*(sl_temperature/(temperature+273.15f))),((lapse*gas_const)/(air_mass*gravity - lapse*gas_const))));
     }
 
-    /* approximates temperature as a fuction of altitude */
-    float approx_temp(float T, float h) 
+    /**
+     * @brief Calculate approximate temperature based on altitude in Celsius
+     * 
+     * @param temperature Current temperature in Celsuis
+     * @param altitude Altitude in m
+     * @return float Approximate temperature at altitude
+     */
+    float approx_temp( float temperature, float altitude ) 
     {
-        return T - lapse*h;
+        return temperature - lapse*altitude;
     }
 
-    /* computes air density given temperature and pressure */
-    float approx_density(float p, float T) 
+    /**
+     * @brief Calculate air density in kg/m^3
+     * 
+     * @param pressure Static pressure in Pa
+     * @param temperature Temperature in Celsius
+     * @return float Resulting air density
+     */
+    float approx_density( float pressure, float temperature ) 
     {
-        return (air_mass*p)/(gas_const*(T+273.15f));
+        return (air_mass*pressure)/(gas_const*(temperature+273.15f));
     }
 } // End of namespace convert
 
-// Printing helper functions to output data to serial monitor/terminal
+/*! @} End of Doxygen Groups*/
+
+/*!
+ *  \addtogroup print
+ *  @{
+ */
+
+//! Printing helper functions to output data to serial monitor/terminal
 namespace print
 {
+    /**
+     * @brief Print buffer in HEX
+     * 
+     * @param buf char buffer of bytes
+     * @param len Length of buffer to print
+     */
     void print_hex( char* buf, int len )
     {
         for( size_t i = 0; i < len; ++i )
@@ -197,8 +279,10 @@ namespace print
             char _byte = buf[i] & 0xFF;
 
             #if defined (__AVR__)
+                // Arduino streaming library
                 #ifdef ARDUINO_STREAMING
                     Serial << _HEX(_byte) << " ";
+                // Regular serial print
                 #else
                     Serial.print( _byte, HEX );
                     Serial.print( " " );
@@ -208,6 +292,10 @@ namespace print
             #endif
         }
     }
-}
+} // End of namespace print
+
+/*! @} End of Doxygen Groups*/
 
 } // End of namespace aero
+
+/*! @} End of Doxygen Groups*/

@@ -85,7 +85,7 @@ public:
      * @param data struct object to add to the message buffer
      * @return Message& reference to self for builder pattern
      */
-    Message& add_actuators( const Actuators& data );
+    Message& add_actuators( const Servos& data );
 
     /**
      * @brief Add air data to the message buffer

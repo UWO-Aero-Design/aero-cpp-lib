@@ -1,0 +1,251 @@
+\hypertarget{namespaceaero_1_1convert}{}\section{aero\+:\+:convert Namespace Reference}
+\label{namespaceaero_1_1convert}\index{aero\+::convert@{aero\+::convert}}
+
+
+Data conversion helper functions.  
+
+
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceaero_1_1convert_afd79904e6a1f0bd81d9491c37004e10e}\label{namespaceaero_1_1convert_afd79904e6a1f0bd81d9491c37004e10e}} 
+enum \hyperlink{namespaceaero_1_1convert_afd79904e6a1f0bd81d9491c37004e10e}{Unit} \{ \newline
+{\bfseries n}, 
+{\bfseries u}, 
+{\bfseries m}, 
+{\bfseries base}, 
+\newline
+{\bfseries k}, 
+{\bfseries M}, 
+{\bfseries G}
+ \}\begin{DoxyCompactList}\small\item\em Units for metric conversion. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{namespaceaero_1_1convert_ad9f4211beafba2bff6ec617f78d1b52e}{metric} (float value, \hyperlink{namespaceaero_1_1convert_afd79904e6a1f0bd81d9491c37004e10e}{Unit} src, \hyperlink{namespaceaero_1_1convert_afd79904e6a1f0bd81d9491c37004e10e}{Unit} dest)
+\begin{DoxyCompactList}\small\item\em Convert a value to a new metric prefix. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_ae3cb87c1ce3ff50f8af2180be377562d}{ind\+\_\+as} (float diff\+\_\+pressure)
+\begin{DoxyCompactList}\small\item\em Calculates indicated airspeed in m/s. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_a0805769f0bdd8dd4513c4825ac89e8fa}{equiv\+\_\+as} (float diff\+\_\+pressure, float pressure)
+\begin{DoxyCompactList}\small\item\em Calculates equivalent air speed in m/s. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_a76676002927e969f289ea46720db730b}{true\+\_\+as} (float airspeed, float temperature)
+\begin{DoxyCompactList}\small\item\em Calculates true air speed in m/s. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_ae6db0406b830c72f11fd4de30e9ffc24}{pressure\+\_\+altitude} (float pressure)
+\begin{DoxyCompactList}\small\item\em Calculates pressure altitude in m. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_a05ebdd5d199459299bdd167c089d7d12}{above\+\_\+gnd\+\_\+altitude} (float pressure, float offset)
+\begin{DoxyCompactList}\small\item\em Calculates above ground level in m given an offet. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_a41de71a2cd962f132ed1725f2bf3322d}{mean\+\_\+sl\+\_\+altitude} (float agl, float start\+\_\+alt)
+\begin{DoxyCompactList}\small\item\em Calcualtes altitude above mean sea level in m. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_ad11c320fabe5ed6d5356870efe473ed1}{density\+\_\+altitude} (float pressure, float temperature)
+\begin{DoxyCompactList}\small\item\em Calculates density altitude in m which is based on standard atmosphere. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_aa3adf5c29a73465ac7f697c906accb33}{approx\+\_\+temp} (float temperature, float altitude)
+\begin{DoxyCompactList}\small\item\em Calculate approximate temperature based on altitude in Celsius. \end{DoxyCompactList}\item 
+float \hyperlink{namespaceaero_1_1convert_a77f3e5181a417c93f2870a4cbede5011}{approx\+\_\+density} (float pressure, float temperature)
+\begin{DoxyCompactList}\small\item\em Calculate air density in kg/m$^\wedge$3. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Data conversion helper functions. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceaero_1_1convert_a05ebdd5d199459299bdd167c089d7d12}\label{namespaceaero_1_1convert_a05ebdd5d199459299bdd167c089d7d12}} 
+\index{aero\+::convert@{aero\+::convert}!above\+\_\+gnd\+\_\+altitude@{above\+\_\+gnd\+\_\+altitude}}
+\index{above\+\_\+gnd\+\_\+altitude@{above\+\_\+gnd\+\_\+altitude}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{above\+\_\+gnd\+\_\+altitude()}{above\_gnd\_altitude()}}
+{\footnotesize\ttfamily float aero\+::convert\+::above\+\_\+gnd\+\_\+altitude (\begin{DoxyParamCaption}\item[{float}]{pressure,  }\item[{float}]{offset }\end{DoxyParamCaption})}
+
+
+
+Calculates above ground level in m given an offet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pressure} & Static pressure in Pa \\
+\hline
+{\em offset} & Level offset in m \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting above ground level altitude in m 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_a77f3e5181a417c93f2870a4cbede5011}\label{namespaceaero_1_1convert_a77f3e5181a417c93f2870a4cbede5011}} 
+\index{aero\+::convert@{aero\+::convert}!approx\+\_\+density@{approx\+\_\+density}}
+\index{approx\+\_\+density@{approx\+\_\+density}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{approx\+\_\+density()}{approx\_density()}}
+{\footnotesize\ttfamily float aero\+::convert\+::approx\+\_\+density (\begin{DoxyParamCaption}\item[{float}]{pressure,  }\item[{float}]{temperature }\end{DoxyParamCaption})}
+
+
+
+Calculate air density in kg/m$^\wedge$3. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pressure} & Static pressure in Pa \\
+\hline
+{\em temperature} & Temperature in Celsius \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting air density 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_aa3adf5c29a73465ac7f697c906accb33}\label{namespaceaero_1_1convert_aa3adf5c29a73465ac7f697c906accb33}} 
+\index{aero\+::convert@{aero\+::convert}!approx\+\_\+temp@{approx\+\_\+temp}}
+\index{approx\+\_\+temp@{approx\+\_\+temp}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{approx\+\_\+temp()}{approx\_temp()}}
+{\footnotesize\ttfamily float aero\+::convert\+::approx\+\_\+temp (\begin{DoxyParamCaption}\item[{float}]{temperature,  }\item[{float}]{altitude }\end{DoxyParamCaption})}
+
+
+
+Calculate approximate temperature based on altitude in Celsius. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em temperature} & Current temperature in Celsuis \\
+\hline
+{\em altitude} & Altitude in m \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Approximate temperature at altitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_ad11c320fabe5ed6d5356870efe473ed1}\label{namespaceaero_1_1convert_ad11c320fabe5ed6d5356870efe473ed1}} 
+\index{aero\+::convert@{aero\+::convert}!density\+\_\+altitude@{density\+\_\+altitude}}
+\index{density\+\_\+altitude@{density\+\_\+altitude}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{density\+\_\+altitude()}{density\_altitude()}}
+{\footnotesize\ttfamily float aero\+::convert\+::density\+\_\+altitude (\begin{DoxyParamCaption}\item[{float}]{pressure,  }\item[{float}]{temperature }\end{DoxyParamCaption})}
+
+
+
+Calculates density altitude in m which is based on standard atmosphere. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pressure} & Static pressure in Pa \\
+\hline
+{\em temperature} & Temperature in Celsius \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting density altitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_a0805769f0bdd8dd4513c4825ac89e8fa}\label{namespaceaero_1_1convert_a0805769f0bdd8dd4513c4825ac89e8fa}} 
+\index{aero\+::convert@{aero\+::convert}!equiv\+\_\+as@{equiv\+\_\+as}}
+\index{equiv\+\_\+as@{equiv\+\_\+as}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{equiv\+\_\+as()}{equiv\_as()}}
+{\footnotesize\ttfamily float aero\+::convert\+::equiv\+\_\+as (\begin{DoxyParamCaption}\item[{float}]{diff\+\_\+pressure,  }\item[{float}]{pressure }\end{DoxyParamCaption})}
+
+
+
+Calculates equivalent air speed in m/s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em diff\+\_\+pressure} & Differential pressure in Pa \\
+\hline
+{\em pressure} & Static pressure in Pa \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting equivalent air speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_ae3cb87c1ce3ff50f8af2180be377562d}\label{namespaceaero_1_1convert_ae3cb87c1ce3ff50f8af2180be377562d}} 
+\index{aero\+::convert@{aero\+::convert}!ind\+\_\+as@{ind\+\_\+as}}
+\index{ind\+\_\+as@{ind\+\_\+as}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{ind\+\_\+as()}{ind\_as()}}
+{\footnotesize\ttfamily float aero\+::convert\+::ind\+\_\+as (\begin{DoxyParamCaption}\item[{float}]{diff\+\_\+pressure }\end{DoxyParamCaption})}
+
+
+
+Calculates indicated airspeed in m/s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em diff\+\_\+pressure} & Differential pressure in Pa \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting indicated air speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_a41de71a2cd962f132ed1725f2bf3322d}\label{namespaceaero_1_1convert_a41de71a2cd962f132ed1725f2bf3322d}} 
+\index{aero\+::convert@{aero\+::convert}!mean\+\_\+sl\+\_\+altitude@{mean\+\_\+sl\+\_\+altitude}}
+\index{mean\+\_\+sl\+\_\+altitude@{mean\+\_\+sl\+\_\+altitude}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{mean\+\_\+sl\+\_\+altitude()}{mean\_sl\_altitude()}}
+{\footnotesize\ttfamily float aero\+::convert\+::mean\+\_\+sl\+\_\+altitude (\begin{DoxyParamCaption}\item[{float}]{agl,  }\item[{float}]{start\+\_\+alt }\end{DoxyParamCaption})}
+
+
+
+Calcualtes altitude above mean sea level in m. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em agl} & above ground level altitude in m \\
+\hline
+{\em start\+\_\+alt} & Start altitude of flight in m \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting mean sea level altitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_ad9f4211beafba2bff6ec617f78d1b52e}\label{namespaceaero_1_1convert_ad9f4211beafba2bff6ec617f78d1b52e}} 
+\index{aero\+::convert@{aero\+::convert}!metric@{metric}}
+\index{metric@{metric}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{metric()}{metric()}}
+{\footnotesize\ttfamily float aero\+::convert\+::metric (\begin{DoxyParamCaption}\item[{float}]{value,  }\item[{\hyperlink{namespaceaero_1_1convert_afd79904e6a1f0bd81d9491c37004e10e}{Unit}}]{src,  }\item[{\hyperlink{namespaceaero_1_1convert_afd79904e6a1f0bd81d9491c37004e10e}{Unit}}]{dest }\end{DoxyParamCaption})}
+
+
+
+Convert a value to a new metric prefix. 
+
+A metric prefix is like centi or milli or kilo. So use this function to change from, for example, metres to kilometres, very easily
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Value you want to change \\
+\hline
+{\em src} & Unit the value currently has \\
+\hline
+{\em dest} & Unit you want the value to have \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Value with new metric prefix 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_ae6db0406b830c72f11fd4de30e9ffc24}\label{namespaceaero_1_1convert_ae6db0406b830c72f11fd4de30e9ffc24}} 
+\index{aero\+::convert@{aero\+::convert}!pressure\+\_\+altitude@{pressure\+\_\+altitude}}
+\index{pressure\+\_\+altitude@{pressure\+\_\+altitude}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{pressure\+\_\+altitude()}{pressure\_altitude()}}
+{\footnotesize\ttfamily float aero\+::convert\+::pressure\+\_\+altitude (\begin{DoxyParamCaption}\item[{float}]{pressure }\end{DoxyParamCaption})}
+
+
+
+Calculates pressure altitude in m. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pressure} & Static Pressure in Pa \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting pressure altitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceaero_1_1convert_a76676002927e969f289ea46720db730b}\label{namespaceaero_1_1convert_a76676002927e969f289ea46720db730b}} 
+\index{aero\+::convert@{aero\+::convert}!true\+\_\+as@{true\+\_\+as}}
+\index{true\+\_\+as@{true\+\_\+as}!aero\+::convert@{aero\+::convert}}
+\subsubsection{\texorpdfstring{true\+\_\+as()}{true\_as()}}
+{\footnotesize\ttfamily float aero\+::convert\+::true\+\_\+as (\begin{DoxyParamCaption}\item[{float}]{airspeed,  }\item[{float}]{temperature }\end{DoxyParamCaption})}
+
+
+
+Calculates true air speed in m/s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em airspeed} & Either indicated or equivalent airspeed in m/s \\
+\hline
+{\em temperature} & Air temperature in Celsuis \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Resulting equivalent true air speed 
+\end{DoxyReturn}

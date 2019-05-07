@@ -70,7 +70,7 @@ Message& Message::add_status( const Status& data )
 }
 
 // Add actuators to buffer
-Message& Message::add_actuators( const Actuators& data )
+Message& Message::add_actuators( const Servos& data )
 {
     this->set( Signature::Actuators, (uint8_t *) &data );
     return *this;
@@ -249,7 +249,7 @@ uint8_t Message::segment_size( Signature segment )
         } break;
         case Signature::Actuators:
         {
-            return sizeof( struct Actuators );
+            return sizeof( struct Servos );
         } break;
         case Signature::AData:
         {
