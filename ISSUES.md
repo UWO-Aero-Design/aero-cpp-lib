@@ -9,3 +9,5 @@
 8) Test utility library
 9) Add scaling factors for comm library so the protocol is defined already
 10) Move implementations out of utility.hpp
+11) Serial read into buffer functionality (start and end bytes)
+12) Demo c++ program to write over usb to teensy from comp

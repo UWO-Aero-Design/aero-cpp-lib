@@ -6,4 +6,4 @@ include_directories( ${Message_SOURCE_DIR}/include )
 
 file( GLOB SOURCES "${Message_SOURCE_DIR}/src/*.cpp" )
 
-add_executable(main main.cpp ${SOURCES})
+add_executable(main examples/main.cpp ${SOURCES})
