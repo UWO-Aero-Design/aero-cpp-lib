@@ -1,2 +1,8 @@
-# comm-protocol
-Code base for comm protocol for aero design that can be used by any c++ project
+# aero-cpp-lib
+C++ Library for Aero Design. Unit tested.
+
+Currently is planned to contain:
+- Simple communication protocol with building/parsing functionality
+- Binary helper functions
+- Data conversion functions
+- Generic print helper function
