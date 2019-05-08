@@ -104,3 +104,5 @@ nbproject
 
 build/
 .vscode/
+doc/html/
+doc/latex/
