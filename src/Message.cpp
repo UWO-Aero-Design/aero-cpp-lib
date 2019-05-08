@@ -10,6 +10,9 @@
 namespace aero
 {
 
+// Using namespace to clean up the code
+using namespace def;
+
 // Default constructor
 Message::Message( void )
 {
@@ -21,87 +24,87 @@ Message::Message( void )
 }
 
 // Add pitot to buffer
-Message& Message::add_pitot( const Pitot& data )
+Message& Message::add_pitot( const Pitot_t& data )
 {
     this->set( Signature::Pitot, (uint8_t *) &data );
     return *this;
 }
 
 // Add imu to buffer
-Message& Message::add_imu( const IMU& data )
+Message& Message::add_imu( const IMU_t& data )
 {
     this->set( Signature::IMU, (uint8_t *) &data );
     return *this;
 }
 
 // Add gps to buffer
-Message& Message::add_gps ( const GPS& data )
+Message& Message::add_gps ( const GPS_t& data )
 {
     this->set( Signature::GPS, (uint8_t *) &data );
     return *this;
 }
 
 // Add enviro to buffer
-Message& Message::add_enviro( const Enviro& data )
+Message& Message::add_enviro( const Enviro_t& data )
 {
     this->set( Signature::Enviro, (uint8_t *) &data );
     return *this;
 }
 
 // Add battery to buffer
-Message& Message::add_battery( const Battery& data )
+Message& Message::add_battery( const Battery_t& data )
 {
     this->set( Signature::Batt, (uint8_t *) &data );
     return *this;
 }
 
 // Add config to buffer
-Message& Message::add_config( const Config& data )
+Message& Message::add_config( const SystemConfig_t& data )
 {
     this->set( Signature::Config, (uint8_t *) &data );
     return *this;
 }
 
 // Add status to buffer
-Message& Message::add_status( const Status& data )
+Message& Message::add_status( const Status_t& data )
 {
     this->set( Signature::Status, (uint8_t *) &data );
     return *this;
 }
 
 // Add actuators to buffer
-Message& Message::add_actuators( const Servos& data )
+Message& Message::add_actuators( const Servos_t& data )
 {
     this->set( Signature::Actuators, (uint8_t *) &data );
     return *this;
 }
 
 // Add air data to buffer
-Message& Message::add_airdata( const AirData& data )
+Message& Message::add_airdata( const AirData_t& data )
 {
     this->set( Signature::AData, (uint8_t *) &data );
     return *this;
 }
 
 // Add cmds to buffer
-Message& Message::add_cmds( const Commands& data )
+Message& Message::add_cmds( const Commands_t& data )
 {
     this->set( Signature::Cmds, (uint8_t *) &data );
     return *this;
 }
 
 // Add drop algo to buffer
-Message& Message::add_drop( const DropAlgo& data )
+Message& Message::add_drop( const DropAlgo_t& data )
 {
     this->set( Signature::Drop, (uint8_t *) &data );
     return *this;
 }
 
 // Build full message based on buffer
-RawMessage Message::build( ID from, ID to, bool clear )
+RawMessage_t Message::build( ID from, ID to, bool clear )
 {
     // Blank message
-    RawMessage message = {0, 0, 0, NULL, 0, 0, 0};
+    RawMessage_t message = {0, 0, 0, NULL, 0, 0, 0};
 
     // Set start and stop
     message.start = 0x0A;
@@ -148,7 +151,7 @@ RawMessage Message::build( ID from, ID to, bool clear )
 bool Message::validate( const uint8_t* message )
 {
     // We are receiving message
-    RawMessage* msg = ( RawMessage* ) message;
+    RawMessage_t* msg = ( RawMessage_t* ) message;
     
     // If the check sum sent in the message equals the check sum we calculate,
     // We have a valid message
@@ -161,13 +164,13 @@ bool Message::validate( const uint8_t* message )
 }
 
 // Parse valid buffer
-ParsedMessage Message::parse( const uint8_t* message )
+ParsedMessage_t Message::parse( const uint8_t* message )
 {
     // Message to parse
-    RawMessage* msg = ( RawMessage* ) message;
+    RawMessage_t* msg = ( RawMessage_t* ) message;
 
     // Message to parse result into
-    ParsedMessage result;
+    ParsedMessage_t result;
 
     // Set from and to values.
     result.m_from = (static_cast< ID >( ( msg->link >> 8)  ) ); // Extract upper byte
@@ -207,7 +210,7 @@ void Message::set( Signature buf_segment, uint8_t* data )
 }
 
 // Calculate check sum
-uint16_t Message::chk_sum ( const RawMessage& message )
+uint16_t Message::chk_sum ( const RawMessage_t& message )
 {
     // TODO: Implement check sum
     return 1;
@@ -221,47 +224,47 @@ uint8_t Message::segment_size( Signature segment )
     {
         case Signature::Pitot:
         {
-            return sizeof( struct Pitot );
+            return sizeof( struct Pitot_t );
         } break;
         case Signature::IMU:
         {
-            return sizeof( struct IMU );
+            return sizeof( struct IMU_t );
         } break;
         case Signature::GPS:
         {
-            return sizeof( struct GPS );
+            return sizeof( struct GPS_t );
         } break;
         case Signature::Enviro:
         {
-            return sizeof( struct Enviro );
+            return sizeof( struct Enviro_t );
         } break;
         case Signature::Batt:
         {
-            return sizeof( struct Battery );
+            return sizeof( struct Battery_t );
         } break;
         case Signature::Config:
         {
-            return sizeof( struct Config );
+            return sizeof( struct SystemConfig_t );
         } break;
         case Signature::Status:
         {
-            return sizeof( struct Status );
+            return sizeof( struct Status_t );
         } break;
         case Signature::Actuators:
         {
-            return sizeof( struct Servos );
+            return sizeof( struct Servos_t );
         } break;
         case Signature::AData:
         {
-            return sizeof( struct AirData );
+            return sizeof( struct AirData_t );
         } break;
         case Signature::Cmds:
         {
-            return sizeof( struct Commands );
+            return sizeof( struct Commands_t );
         } break;
         case Signature::Drop:
         {
-            return sizeof( struct DropAlgo );
+            return sizeof( struct DropAlgo_t );
         } break;
         default:
         {

@@ -8,24 +8,44 @@
     #include <cstdint>
 #endif
 
-// Groundstation --> Aircraft 
-    // Message 
-        // Config, Status, Actuators, Commands
-// Aircraft --> Groundstation
-    // Message
-        // PitotTube, IMU, GPS, EnviroSensor, Battery, Status
+/*!
+ *  \addtogroup aero
+ *  @{
+ */
 
+//! Aero library code
+namespace aero
+{
 
-enum class Signature{   Pitot, IMU, GPS, Enviro, Batt, Config, 
-                        Status, Actuators, AData, Cmds, Drop };
+/*!
+ *  \addtogroup def
+ *  @{
+ */
 
+//! Definitions for the library such as usable structs, constants, etc
+namespace def
+{
+
+/**
+ * @brief Enum class for data signatures of each struct that can be sent
+ */
+enum class Signature{ Pitot, IMU, GPS, Enviro, Batt, Config, Status, Actuators, AData, Cmds, Drop };
+
+/**
+ * @brief Enum class for IDs of possible send and target recipients
+ */
 enum class ID{ Gnd, Plane, G1, G2 };
 
-// Overview Message
-struct __attribute__((__packed__)) RawMessage
-{
-    
+/** @brief Start byte definition for serial communications */
+const uint16_t START_BYTE = 0x0A; 
+/** @brief Stop byte definition for serial communications */
+const uint16_t END_BYTE = 0x0F;   
 
+/**
+ * @brief Raw message struct used to represent a unparsed message
+ */
+struct __attribute__((__packed__)) RawMessage_t
+{
     uint8_t start;       // Start byte for serial transfer
     uint16_t link;       // Link describes the connection the message is trying to bridge. Sender --> Recipient
     uint16_t signature;  // Bits for determining what data is being sent
@@ -37,15 +57,18 @@ struct __attribute__((__packed__)) RawMessage
     uint8_t end;         // End byte for serial transfer
 };
 
-struct __attribute__((__packed__)) ParsedMessage
+/**
+ * @brief Parsed message
+ */
+struct __attribute__((__packed__)) ParsedMessage_t
 {
-    ParsedMessage()
+    ParsedMessage_t()
     {
         for(int i = 0; i < 12; ++i)
             segments[i] = NULL;
     } 
 
-    ~ParsedMessage()
+    ~ParsedMessage_t()
     {
         for(int i = 0; i < 12; ++i)
             delete segments[i]; 
@@ -55,12 +78,18 @@ struct __attribute__((__packed__)) ParsedMessage
     uint8_t* segments[12];
 };
 
-struct __attribute__((__packed__)) Pitot
+/**
+ * @brief Raw pitot tube data 
+ */
+struct __attribute__((__packed__)) Pitot_t
 {
     int16_t differential_pressure;
 };
 
-struct __attribute__((__packed__)) IMU
+/**
+ * @brief Raw IMU data
+ */
+struct __attribute__((__packed__)) IMU_t
 {
     int16_t ax;
     int16_t ay;
@@ -76,7 +105,10 @@ struct __attribute__((__packed__)) IMU
     int16_t roll;
 };
 
-struct __attribute__((__packed__)) GPS
+/**
+ * @brief Raw GPS data
+ */
+struct __attribute__((__packed__)) GPS_t
 {
     int32_t lat;
     int32_t lon;
@@ -87,74 +119,104 @@ struct __attribute__((__packed__)) GPS
     uint32_t date;  // 4 BYTES. XX YR MNTH DAY
 };
 
-struct __attribute__((__packed__)) Enviro
+/**
+ * @brief Raw environmental sensor data 
+ */
+struct __attribute__((__packed__)) Enviro_t
 {
     uint16_t pressure;
     uint16_t humidity;
     uint16_t temperature; 
 };
 
-struct __attribute__((__packed__)) Battery
+/**
+ * @brief Raw battery status data
+ */
+struct __attribute__((__packed__)) Battery_t
 {
     uint16_t voltage;
     uint16_t current;
 };
 
-struct __attribute__((__packed__)) Config
+/**
+ * @brief Configuration data
+ */
+struct __attribute__((__packed__)) SystemConfig_t
 {
 
 };
 
-struct __attribute__((__packed__)) Status
+/**
+ * @brief System status data
+ */
+struct __attribute__((__packed__)) Status_t
 {
     int16_t rssi;        // Signal strength
     uint32_t state;      // State bit fields
 };
 
-// HIGH BYTE is MAX, LOW BYTE is MIN. 
-struct __attribute__((__packed__)) Servos
+/**
+ * @brief Servo data. High bytes are MAX, Low bytes are MIN 
+ */
+struct __attribute__((__packed__)) Servos_t
 {
-    uint16_t servo0;
-    uint16_t servo1;
-    uint16_t servo2;
-    uint16_t servo3;
-    uint16_t servo4;
-    uint16_t servo5;
-    uint16_t servo6;
-    uint16_t servo7;
-    uint16_t servo8;
-    uint16_t servo9;
-    uint16_t servo10;
-    uint16_t servo11;
-    uint16_t servo12;
-    uint16_t servo13;
-    uint16_t servo14;
-    uint16_t servo15;
+    uint32_t servo0;
+    uint32_t servo1;
+    uint32_t servo2;
+    uint32_t servo3;
+    uint32_t servo4;
+    uint32_t servo5;
+    uint32_t servo6;
+    uint32_t servo7;
+    uint32_t servo8;
+    uint32_t servo9;
+    uint32_t servo10;
+    uint32_t servo11;
+    uint32_t servo12;
+    uint32_t servo13;
+    uint32_t servo14;
+    uint32_t servo15;
 };
 
-// Pretty much all we need to send back is AirData in terms of telemetry
-struct __attribute__((__packed__)) AirData
+/**
+ * @brief Processed flight data from raw sensor sources
+ */
+struct __attribute__((__packed__)) AirData_t
 {
-    float ias;
-    float eas;
-    float tas;
-    float agl;
-    float pressure_alt;
-    float msl;
-    float density_alt;
-    float approx_temp;
-    float density;
+    uint32_t ias;
+    uint32_t eas;
+    uint32_t tas;
+    uint32_t agl;
+    uint32_t pressure_alt;
+    uint32_t msl;
+    uint32_t density_alt;
+    uint32_t approx_temp;
+    uint32_t density;
 };
 
-struct __attribute__((__packed__)) Commands
+/**
+ * @brief Command data
+ */
+struct __attribute__((__packed__)) Commands_t
 {
     uint8_t drop;
     uint16_t servos;
     uint8_t pitch;
 };
 
-struct __attribute__((__packed__)) DropAlgo
+/**
+ * @brief Command data
+ */
+struct __attribute__((__packed__)) DropAlgo_t
 {
     int16_t heading;
     uint16_t distance;
 };
+
+} // End of namespace def
+
+/*! @} End of Doxygen Groups*/
+
+} // End of namespace aero
+
+/*! @} End of Doxygen Groups*/

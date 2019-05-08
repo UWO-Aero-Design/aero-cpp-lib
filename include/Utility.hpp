@@ -3,7 +3,7 @@
 #include <climits>
 #include <cstddef>
 
-#if defined(ARDUINO)
+#if defined(ARDUINO) || defined(CORE_TEENSY)
     #include "Arduino.h"
 #else
     #include <iostream>
