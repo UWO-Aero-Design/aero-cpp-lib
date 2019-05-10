@@ -38,9 +38,10 @@ protected:
 TEST_F( AeroMessageTest, EmptyMessage)
 {
     using namespace ::testing;
+    using namespace aero::def;
 
     /* Check proper building */
-    RawMessage message = msg_handler.build( ID::Gnd, ID::G1 );
+    RawMessage_t message = msg_handler.build( ID::Gnd, ID::G1 );
 
     ASSERT_EQ( message.start,     0x0A ) << " Unexpected value for start byte ";
     ASSERT_EQ( message.end,       0x0F ) << " Unexpected value for end byte ";
@@ -54,7 +55,7 @@ TEST_F( AeroMessageTest, EmptyMessage)
     ASSERT_EQ( valid, true );
 
     // Valid parse result
-    ParsedMessage parsed_message = msg_handler.parse( (uint8_t *) &message  );
+    ParsedMessage_t parsed_message = msg_handler.parse( (uint8_t *) &message  );
 
     for( int i = 0; i < 12; ++i )
         ASSERT_EQ( parsed_message.segments[ i ] == NULL, true ) << "All buffer elements should be NULL for empty message";
@@ -66,23 +67,24 @@ TEST_F( AeroMessageTest, EmptyMessage)
 TEST_F( AeroMessageTest, HalfMessage )
 {
     using namespace ::testing;
-    
+    using namespace aero::def;
+
     // Structs to add
-    IMU imu_data; 
+    IMU_t imu_data; 
     imu_data.ax = 5; 
     imu_data.ay = 10; 
     imu_data.az = 15;
 
-    Enviro env_data; 
+    Enviro_t env_data; 
     env_data.humidity = 10; 
     env_data.pressure = 20;
     env_data.temperature = 25;
     
-    Battery bat_data;
+    Battery_t bat_data;
     bat_data.current = 12;
     bat_data.voltage = 25;
 
-    Commands cmd_data;
+    Commands_t cmd_data;
     cmd_data.drop = 99;
     cmd_data.pitch = 1;
     cmd_data.servos = 8;
@@ -92,10 +94,10 @@ TEST_F( AeroMessageTest, HalfMessage )
     msg_handler.add_imu( imu_data ).add_enviro( env_data ).add_battery( bat_data )
                .add_cmds( cmd_data );
 
-    RawMessage message = msg_handler.build( ID::Gnd, ID::G1 );
+    RawMessage_t message = msg_handler.build( ID::Gnd, ID::G1 );
 
-    int length = sizeof( struct IMU ) +  sizeof( struct Enviro ) 
-                 + sizeof( struct Battery ) + sizeof( struct Commands );
+    int length = sizeof( struct IMU_t ) +  sizeof( struct Enviro_t ) 
+                 + sizeof( struct Battery_t ) + sizeof( struct Commands_t );
 
     ASSERT_EQ( message.start,     0x0A ) << " Unexpected value for start byte ";
     ASSERT_EQ( message.end,       0x0F ) << " Unexpected value for end byte ";
@@ -109,7 +111,7 @@ TEST_F( AeroMessageTest, HalfMessage )
     ASSERT_EQ( valid, true );
 
     // Valid parse result
-    ParsedMessage parsed_message = msg_handler.parse( (uint8_t *) &message  );
+    ParsedMessage_t parsed_message = msg_handler.parse( (uint8_t *) &message  );
 
     // Valid data
     for( int i = 0; i < 12; ++i )
@@ -118,10 +120,10 @@ TEST_F( AeroMessageTest, HalfMessage )
             ASSERT_EQ( parsed_message.segments[ i ] == NULL, true ) << std::to_string(i) + " All buffer elements that wererent added should be NULL ";
     }
 
-    IMU *imu = ( IMU* ) parsed_message.segments[ 1 ]; 
-    Enviro *enviro = ( Enviro* ) parsed_message.segments[ 3 ]; 
-    Battery *batt = ( Battery* ) parsed_message.segments[ 4 ]; 
-    Commands *cmds = ( Commands* ) parsed_message.segments[ 9 ]; 
+    IMU_t *imu = ( IMU_t* ) parsed_message.segments[ 1 ]; 
+    Enviro_t *enviro = ( Enviro_t* ) parsed_message.segments[ 3 ]; 
+    Battery_t *batt = ( Battery_t* ) parsed_message.segments[ 4 ]; 
+    Commands_t *cmds = ( Commands_t* ) parsed_message.segments[ 9 ]; 
 
     ASSERT_EQ( imu_data.ax, imu->ax );
     ASSERT_EQ( imu_data.ay, imu->ay );

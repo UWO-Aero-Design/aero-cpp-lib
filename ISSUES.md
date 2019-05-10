@@ -11,3 +11,4 @@
 10) Move implementations out of utility.hpp
 11) Serial read into buffer functionality (start and end bytes)
 12) Demo c++ program to write over usb to teensy from comp
+13) serial functionality is only compiled in for arduino but add it for c++ as well, then can mock for unit testing
