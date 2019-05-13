@@ -145,19 +145,19 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      */
     float metric( float value, Unit src, Unit dest )
     {
-        int exponent = static_cast< int >( dest ) - static_cast< int >( src );
+        int exponent = static_cast< int >( src ) - static_cast< int >( dest );
         return value * powf( 1000.0f, exponent );
     }
 
     /**
-     * @brief Calculates indicated airspeed in m/s 
+     * @brief Calculates calibrated airspeed in m/s 
      * 
      * @param diff_pressure Differential pressure in Pa
-     * @return float Resulting indicated air speed
+     * @return float Resulting calibrated air speed
      */
-    float ind_as( float diff_pressure )
+    float cal_as( float diff_pressure )
     {
-        return (sl_sound_speed * sqrtf( 5.0f * ( powf( ( ( sl_pressure / sl_pressure ) + 1.0f ), ( 2.0f/7.0f ) ) - 1.0f ) ) );
+        return (sl_sound_speed * sqrtf( 5.0f * ( powf( ( ( diff_pressure / sl_pressure ) + 1.0f ), ( 2.0f/7.0f ) ) - 1.0f ) ) );
     }
 
     /**

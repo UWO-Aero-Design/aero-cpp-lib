@@ -60,6 +60,7 @@ TEST( UtilityTest, BitRead )
         ASSERT_EQ( bit::read( (uint32_t)0xFFFFFFFF, i ), 1);
 }
 
+// Test bit clear function in aero library
 TEST( UtilityTest, BitClear )
 {
     using namespace aero;
@@ -75,6 +76,7 @@ TEST( UtilityTest, BitClear )
         ASSERT_EQ( bit::clear( (uint32_t)0xFFFFFFFF, i ), (uint32_t)( 0xFFFFFFFF - pow(2,i) ) );
 }
 
+// Test bit toggle function in aero library
 TEST( UtilityTest, BitToggle )
 {
     using namespace aero;
@@ -90,11 +92,25 @@ TEST( UtilityTest, BitToggle )
         ASSERT_EQ( bit::toggle( (uint32_t)0xFFFFFFFF, i ), (uint32_t)( 0xFFFFFFFF - pow(2,i) ) );
 }
 
+// Test function to convert metric units in aero library
 TEST( UtilityTest, ConvertMetric )
 {
     using namespace aero::convert;
+
+    float value = 1.0f;
+
+    // Convert from base to kilo which would result in divide by 1000f
+    ASSERT_FLOAT_EQ( metric( value, Unit::base, Unit::k ), value / 1000.0f );
+    // Convert from base to milli which would result in mulitply by 1000f
+    ASSERT_FLOAT_EQ( metric( value, Unit::base, Unit::m ), value * 1000.0f );
+    // Convert from base to kilo which would result in divide by 1000000f
+    ASSERT_FLOAT_EQ( metric( value, Unit::m, Unit::k ), value / 1000.0f / 1000.0f );
+    // Convert from base to milli which would result in mulitply by 1000000f
+    ASSERT_FLOAT_EQ( metric( value, Unit::k, Unit::m ), value * 1000.0f * 1000.0f );
 }
 
+// Use EXCEL sheet to generate test points
+// Negative number, 0, positive number
 TEST( UtilityTest, ConvertIndAs )
 {
     using namespace aero::convert;

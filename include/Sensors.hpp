@@ -76,16 +76,6 @@ public:
      */
     const def::IMU_t& data(void) { return m_data; }
 
-    /** @brief types of IMUs that can be made by factory pattern */
-    enum class Model { };
-    /**
-     * @brief Make an IMU object
-     * 
-     * @param choice which IMU child to make
-     * @return IMU* newly created object of selected type
-     */
-    static IMU* make_imu( Model choice );
-
     /**
      * @brief Destructor
      */
@@ -98,6 +88,192 @@ protected:
     // Member variables
     def::IMU_t m_data;      // For imu data
     IMU::Config_t m_config; // For imu configuration
+};
+
+/**
+ * @brief Abstract GPS definition
+ */
+class GPS
+{
+    /** @brief Defines configuration data for the GPS */
+    struct Config_t
+    {
+        // Can add things like offsets here
+        // Make sure to include defaults here
+    };
+
+    /**
+     * @brief Initializes the GPS
+     * 
+     * @return true if initialization was successful
+     * @return false if initialization was unsuccessful
+     */
+    virtual bool init( ) = 0;
+
+    /**
+     * @brief Initializes the GPS with user configuration
+     * 
+     * @param config user selected GPS configuration
+     * @return true if initialization was successful
+     * @return false if initialization was unsuccessful
+     */
+    bool init( GPS::Config_t config )
+    {
+        m_config = config;
+        init();
+    }
+
+    /**
+     * @brief Update the GPS data
+     * 
+     * @return true if update was successful
+     * @return false if update was unsuccessful
+     */
+    virtual bool update( ) = 0;
+
+    /**
+     * @brief Get GPS data
+     * 
+     * @return const def::GPS_t& reference to GPS's data struct
+     */
+    const def::GPS_t& data(void) { return m_data; }
+
+    /**
+     * @brief Destructor
+     */
+    virtual ~GPS();
+
+protected:
+    // Hidden constructor that only children can redefine
+    GPS(){}
+
+    // Member variables
+    def::GPS_t m_data;      // For gps data
+    GPS::Config_t m_config; // For gps configuration
+};
+
+/**
+ * @brief Abstract Pitot Tube definition aka differential pressure sensor
+ */
+class Pitot
+{
+    /** @brief Defines configuration data for the pitot tube */
+    struct Config_t
+    {
+        // Can add things like offsets here
+        // Make sure to include defaults here
+    };
+
+    /**
+     * @brief Initializes the pitot tube
+     * 
+     * @return true if initialization was successful
+     * @return false if initialization was unsuccessful
+     */
+    virtual bool init( ) = 0;
+
+    /**
+     * @brief Initializes the pitot tube with user configuration
+     * 
+     * @param config user selected pitot tube configuration
+     * @return true if initialization was successful
+     * @return false if initialization was unsuccessful
+     */
+    bool init( Pitot::Config_t config )
+    {
+        m_config = config;
+        init();
+    }
+
+    /**
+     * @brief Update the pitot tube data
+     * 
+     * @return true if update was successful
+     * @return false if update was unsuccessful
+     */
+    virtual bool update( ) = 0;
+
+    /**
+     * @brief Get pitot tube data
+     * 
+     * @return const def::Pitot_t& reference to pitot tube's data struct
+     */
+    const def::Pitot_t& data(void) { return m_data; }
+
+    /**
+     * @brief Destructor
+     */
+    virtual ~Pitot();
+
+protected:
+    // Hidden constructor that only children can redefine
+    Pitot(){}
+
+    // Member variables
+    def::Pitot_t m_data;      // For pitot tube data
+    Pitot::Config_t m_config; // For pitot tube configuration
+};
+
+/**
+ * @brief Abstract environmental sensor definition
+ */
+class EnviroSensor
+{
+    /** @brief Defines configuration data for the environmental sensor */
+    struct Config_t
+    {
+        // Can add things like offsets here
+        // Make sure to include defaults here
+    };
+
+    /**
+     * @brief Initializes the environmental sensor
+     * 
+     * @return true if initialization was successful
+     * @return false if initialization was unsuccessful
+     */
+    virtual bool init( ) = 0;
+
+    /**
+     * @brief Initializes the environmental sensor with user configuration
+     * 
+     * @param config user selected environmental sensor configuration
+     * @return true if initialization was successful
+     * @return false if initialization was unsuccessful
+     */
+    bool init( EnviroSensor::Config_t config )
+    {
+        m_config = config;
+        init();
+    }
+
+    /**
+     * @brief Update the environmental sensor data
+     * 
+     * @return true if update was successful
+     * @return false if update was unsuccessful
+     */
+    virtual bool update( ) = 0;
+
+    /**
+     * @brief Get environmental sensor data
+     * 
+     * @return const def::Enviro_t& reference to environmental sensor's data struct
+     */
+    const def::Enviro_t& data(void) { return m_data; }
+
+    /**
+     * @brief Destructor
+     */
+    virtual ~EnviroSensor();
+
+protected:
+    // Hidden constructor that only children can redefine
+    EnviroSensor(){}
+
+    // Member variables
+    def::Enviro_t m_data;      // For environmental sensor data
+    EnviroSensor::Config_t m_config; // For environmental sensor configuration
 };
 
 } // End of namespace sensor
