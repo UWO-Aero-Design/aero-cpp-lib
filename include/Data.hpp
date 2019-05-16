@@ -76,6 +76,67 @@ struct __attribute__((__packed__)) ParsedMessage_t
 
     ID m_from, m_to;
     uint8_t* segments[12];
+
+    // Data accessors
+    Pitot_t* pitot( void ) const
+    {
+        int index = static_cast<int>(Signature::Pitot);
+        return reinterpret_cast<Pitot_t*>( parsed.segments[ index ] ) );
+    }
+
+    IMU_t* imu( void ) const
+    {
+        int index = static_cast<int>(Signature::IMU);
+        return reinterpret_cast<IMU_t*>( parsed.segments[ index ] ) );
+    }
+
+    GPS_t* gps( void ) const
+    {
+        int index = static_cast<int>(Signature::GPS);
+        return reinterpret_cast<GPS_t*>( parsed.segments[ index ] ) );
+    }
+
+    Enviro_t* enviro( void ) const
+    {
+        int index = static_cast<int>(Signature::Enviro);
+        return reinterpret_cast<Enviro_t*>( parsed.segments[ index ] ) );
+    }
+
+    Battery_t* battery( void ) const
+    {
+        int index = static_cast<int>(Signature::Batt);
+        return reinterpret_cast<Battery_t*>( parsed.segments[ index ] ) );
+    }
+
+    SystemConfig_t* config( void ) const
+    {
+        int index = static_cast<int>(Signature::Config);
+        return reinterpret_cast<SystemConfig_t*>( parsed.segments[ index ] ) );
+    }
+
+    Status_t* status( void ) const
+    {
+        int index = static_cast<int>(Signature::Status);
+        return reinterpret_cast<Status_t*>( parsed.segments[ index ] ) );
+    }
+
+    Servo_t* servos( void ) const
+    {
+        int index = static_cast<int>(Signature::Actuators);
+        return reinterpret_cast<Servo_t*>( parsed.segments[ index ] ) );
+    }
+
+    AirData_t* air_data( void ) const
+    {
+        int index = static_cast<int>(Signature::AData);
+        return reinterpret_cast<AirData_t*>( parsed.segments[ index ] ) );
+    }
+
+    DropAlgo_t* drop_algo( void ) const
+    {
+        int index = static_cast<int>(Signature::Drop);
+        return reinterpret_cast<DropAlgo_t*>( parsed.segments[ index ] ) );
+    }
 };
 
 /**
@@ -205,7 +266,7 @@ struct __attribute__((__packed__)) Commands_t
 };
 
 /**
- * @brief Command data
+ * @brief Drop Algorithm data
  */
 struct __attribute__((__packed__)) DropAlgo_t
 {
