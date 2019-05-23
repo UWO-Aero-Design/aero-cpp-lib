@@ -1,14 +1,39 @@
 #ifndef PINS_HPP
 #define PINS_HPP
 
+/*!
+ *  \addtogroup aero
+ *  @{
+ */
+
+//! Aero library code
 namespace aero
 {
 
+// Typedef for Pin type
 using Pin = const unsigned int;
+
+/**
+ * @brief Struct defining I2C pins
+ */
 struct I2C  { Pin SDA; Pin SCL; };
+
+/**
+ * @brief Struct defining SPI pins
+ */
 struct SPI  { Pin MOSI; Pin MISO; Pin SCK; Pin CS; };
+
+/**
+ * @brief Struct defining UART pins
+ */
 struct UART { Pin TX; Pin RX; };
 
+/*!
+ *  \addtogroup teensy35
+ *  @{
+ */
+
+//! Teensy3.5 pin definitions interfaces
 namespace teensy35
 {
 
@@ -126,10 +151,12 @@ namespace teensy35
     // Onboard LED
     Pin LED = P13;
 
-    // PWM Pins
-}
+} // End of namespace teensy3.5
+
+/*! @} End of Doxygen Groups*/
 
 } // End of namespace aero
 
+/*! @} End of Doxygen Groups*/
 
 #endif // PINS_HPP
