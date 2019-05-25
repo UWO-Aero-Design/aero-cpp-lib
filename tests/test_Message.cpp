@@ -1,3 +1,8 @@
+#if defined(ARDUINO) || defined(CORE_TEENSY)
+    // This if defined is added so Arduino does not compile this code
+    // when this library is added as a submodule
+#else
+
 // File for testing communication protocol
 #include <gtest/gtest.h>
 #include <iostream>
@@ -164,3 +169,4 @@ TEST_F( AeroMessageTest, HalfMessage )
         ASSERT_EQ( parsed_message.segments[ i ] == NULL, true ) << "All buffer elements should be NULL for empty message";
 }
 
+#endif

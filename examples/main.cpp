@@ -1,5 +1,10 @@
+#if defined(ARDUINO) || defined(CORE_TEENSY)
+    // This if defined is added so Arduino does not compile this code
+    // when this library is added as a submodule
+#else
+
 // #include "Message.hpp"
-#include "Message.hpp"
+#include "../include/Message.hpp"
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -29,6 +34,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
+#endif
 
 
 

@@ -1,3 +1,8 @@
+#if defined(ARDUINO) || defined(CORE_TEENSY)
+    // This if defined is added so Arduino does not compile this code
+    // when this library is added as a submodule
+#else
+
 // File for testing utility functions
 #include <gtest/gtest.h>
 #include <iostream>
@@ -155,3 +160,5 @@ TEST( UtilityTest, ConvertApproxDensity )
 {
     using namespace aero::convert;
 }
+
+#endif

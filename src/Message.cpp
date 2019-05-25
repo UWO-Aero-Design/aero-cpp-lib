@@ -5,7 +5,7 @@
     #include <cstring>
 #endif
 
-#include "Message.hpp"
+#include "../include/Message.hpp"
 
 namespace aero
 {
