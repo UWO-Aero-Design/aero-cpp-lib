@@ -24,7 +24,7 @@ Message::Message( void )
 }
 
 // Add pitot to buffer
-Message& Message::add_pitot( const Pitot_t& data )
+Message& Message::add_pitot( const def::MsgPitot_t& data )
 {
     this->set( Signature::Pitot, (uint8_t *) &data );
     return *this;
@@ -224,7 +224,7 @@ uint8_t Message::segment_size( Signature segment )
     {
         case Signature::Pitot:
         {
-            return sizeof( struct Pitot_t );
+            return sizeof( struct MsgPitot_t );
         } break;
         case Signature::IMU:
         {
