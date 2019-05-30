@@ -98,6 +98,8 @@ class GPS
     /** @brief Defines configuration data for the GPS */
     struct Config_t
     {
+        uint32_t baud_rate;
+        uint16_t poll_time_ms;
         // Can add things like offsets here
         // Make sure to include defaults here
     };
