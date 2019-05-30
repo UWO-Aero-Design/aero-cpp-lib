@@ -95,6 +95,7 @@ protected:
  */
 class GPS
 {
+public:
     /** @brief Defines configuration data for the GPS */
     struct Config_t
     {
@@ -143,7 +144,7 @@ class GPS
     /**
      * @brief Destructor
      */
-    virtual ~GPS();
+    virtual ~GPS(){}
 
 protected:
     // Hidden constructor that only children can redefine
@@ -200,7 +201,7 @@ class Pitot
      * 
      * @return const def::Pitot_t& reference to pitot tube's data struct
      */
-    const def::Pitot_t& data(void) { return m_data; }
+    const def::MsgPitot_t& data(void) { return m_data; }
 
     /**
      * @brief Destructor
@@ -212,7 +213,7 @@ protected:
     Pitot(){}
 
     // Member variables
-    def::Pitot_t m_data;      // For pitot tube data
+    def::MsgPitot_t m_data;      // For pitot tube data
     Pitot::Config_t m_config; // For pitot tube configuration
 };
 
