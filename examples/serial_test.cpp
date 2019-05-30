@@ -9,6 +9,7 @@
 
 int main(void)
 {
+    using namespace aero;
     using namespace aero::def;
     aero::Message messageHandler;
     

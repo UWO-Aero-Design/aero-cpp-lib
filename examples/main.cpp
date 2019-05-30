@@ -18,17 +18,17 @@ int main(int argc, char **argv)
 
     Message messageHandler;
 
-    IMU imu = {10, -12212, 131};
-    Status status = { 1234, 992 };
+    def::IMU_t imu = {10, -12212, 131};
+    def::Status_t status = { 1234, 992 };
 
     messageHandler.add_imu( imu );
     messageHandler.add_status( status );
     
-    RawMessage message = messageHandler.build( ID::G1, ID::G2 );
-    ParsedMessage parsed = messageHandler.parse ( (uint8_t *) &message );
+    RawMessage_t message = messageHandler.build( ID::G1, ID::G2 );
+    ParsedMessage_t parsed = messageHandler.parse ( (uint8_t *) &message );
 
-    IMU *imuu = ( reinterpret_cast<IMU*>( parsed.segments[ static_cast<int>(Signature::IMU) ] ) );
-    Status *statuss = ( reinterpret_cast<Status*>( parsed.segments[ static_cast<int>(Signature::Status) ] ) );
+    def::IMU_t *imuu = ( reinterpret_cast<def::IMU_t*>( parsed.segments[ static_cast<int>(def::Signature::IMU) ] ) );
+    def::Status_t *statuss = ( reinterpret_cast<def::Status_t*>( parsed.segments[ static_cast<int>(def::Signature::Status) ] ) );
     std::cout << "Parsed: " << imuu->ay << " " << statuss->rssi;
 
     return 0;

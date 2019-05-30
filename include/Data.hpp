@@ -22,14 +22,22 @@ namespace aero
  *  @{
  */
 
-//! Definitions for the library such as usable structs, constants, etc
+//! Definitions for data that can be represented in the library such as usable structs, constants, etc
 namespace def
 {
 
 /**
- * @brief Raw pitot tube data 
+ * @brief Raw pitot tube data to be used to represent actual data coming from a Pitot tube 
  */
-struct __attribute__((__packed__)) Pitot_t
+struct RawPitot_t
+{
+    float differential_pressure;
+};
+
+/**
+ * @brief Pitot tube data used for the messaging protocol, represented only in fixed point
+ */
+struct __attribute__((__packed__)) MsgPitot_t
 {
     int16_t differential_pressure;
 };
@@ -165,114 +173,6 @@ struct __attribute__((__packed__)) DropAlgo_t
  * @brief Enum class for data signatures of each struct that can be sent
  */
 enum class Signature{ Pitot, IMU, GPS, Enviro, Batt, Config, Status, Actuators, AData, Cmds, Drop };
-
-/**
- * @brief Enum class for IDs of possible send and target recipients
- */
-enum class ID{ Gnd, Plane, G1, G2 };
-
-/** @brief Start byte definition for serial communications */
-const uint16_t START_BYTE = 0x0A; 
-/** @brief Stop byte definition for serial communications */
-const uint16_t END_BYTE = 0x0F;   
-
-/**
- * @brief Raw message struct used to represent a unparsed message
- */
-struct __attribute__((__packed__)) RawMessage_t
-{
-    uint8_t start;       // Start byte for serial transfer
-    uint16_t link;       // Link describes the connection the message is trying to bridge. Sender --> Recipient
-    uint16_t signature;  // Bits for determining what data is being sent
-
-    uint8_t buffer[256]; // Actual data. Max size
-    uint8_t length;
-
-    uint16_t crc;        // Try fast crc
-    uint8_t end;         // End byte for serial transfer
-};
-
-/**
- * @brief Parsed message
- */
-struct __attribute__((__packed__)) ParsedMessage_t
-{
-    ParsedMessage_t()
-    {
-        for(int i = 0; i < 12; ++i)
-            segments[i] = NULL;
-    } 
-
-    ~ParsedMessage_t()
-    {
-        for(int i = 0; i < 12; ++i)
-            delete segments[i]; 
-    }
-
-    ID m_from, m_to;
-    uint8_t* segments[12];
-
-    // Data accessors
-    Pitot_t* pitot( void ) const
-    {
-        int index = static_cast<int>(Signature::Pitot);
-        return reinterpret_cast<Pitot_t*>( segments[ index ] );
-    }
-
-    IMU_t* imu( void ) const
-    {
-        int index = static_cast<int>(Signature::IMU);
-        return reinterpret_cast<IMU_t*>( segments[ index ] );
-    }
-
-    GPS_t* gps( void ) const
-    {
-        int index = static_cast<int>(Signature::GPS);
-        return reinterpret_cast<GPS_t*>( segments[ index ] );
-    }
-
-    Enviro_t* enviro( void ) const
-    {
-        int index = static_cast<int>(Signature::Enviro);
-        return reinterpret_cast<Enviro_t*>( segments[ index ] );
-    }
-
-    Battery_t* battery( void ) const
-    {
-        int index = static_cast<int>(Signature::Batt);
-        return reinterpret_cast<Battery_t*>( segments[ index ] );
-    }
-
-    SystemConfig_t* config( void ) const
-    {
-        int index = static_cast<int>(Signature::Config);
-        return reinterpret_cast<SystemConfig_t*>( segments[ index ] );
-    }
-
-    Status_t* status( void ) const
-    {
-        int index = static_cast<int>(Signature::Status);
-        return reinterpret_cast<Status_t*>( segments[ index ] );
-    }
-
-    Servos_t* servos( void ) const
-    {
-        int index = static_cast<int>(Signature::Actuators);
-        return reinterpret_cast<Servos_t*>( segments[ index ] );
-    }
-
-    AirData_t* air_data( void ) const
-    {
-        int index = static_cast<int>(Signature::AData);
-        return reinterpret_cast<AirData_t*>( segments[ index ] );
-    }
-
-    DropAlgo_t* drop_algo( void ) const
-    {
-        int index = static_cast<int>(Signature::Drop);
-        return reinterpret_cast<DropAlgo_t*>( segments[ index ] );
-    }
-};
 
 } // End of namespace def
 

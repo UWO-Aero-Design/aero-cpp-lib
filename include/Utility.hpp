@@ -1,11 +1,12 @@
 #pragma once
 
-#include <climits>
-#include <cstddef>
-
 #if defined(ARDUINO) || defined(CORE_TEENSY)
     #include "Arduino.h"
+#elif defined(SWIG)
+    #warning "Using swig"
 #else
+    #include <climits>
+    #include <cstddef>
     #include <iostream>
     #include <climits>
     #include <cstddef>
@@ -113,19 +114,15 @@ namespace bit
  */
 
 //! Data conversion helper functions
-namespace convert // Credit goes to github.com/bolderflight/AirData
+namespace calc // Credit goes to github.com/bolderflight/AirData
 {
-    // Namespace constants
-    namespace
-    {
-        const static float gravity = 9.807f;            // Acceleration caused by gravity       [ m/s^2 ]
-        const static float sl_sound_speed = 340.29f;    // Standard speed of sound at sea level [ m/s ]
-        const static float sl_pressure = 101325.0f;     // Standard temperature at sea level    [ Pa ]
-        const static float sl_temperature = 288.15f;    // Standard sea level temperature       [ K ]
-        const static float lapse = 0.0065f;             // Standard lapse rate                  [ K/m ]
-        const static float gas_const = 8.314f;          // Gas constant                         [ J/kg*mol ]
-        const static float air_mass = 0.02895f;          // Molecular mass of air                [ kg/mol ]
-    }
+        const  float gravity = 9.807f;            // Acceleration caused by gravity       [ m/s^2 ]
+        const  float sl_sound_speed = 340.29f;    // Standard speed of sound at sea level [ m/s ]
+        const  float sl_pressure = 101325.0f;     // Standard temperature at sea level    [ Pa ]
+        const  float sl_temperature = 288.15f;    // Standard sea level temperature       [ K ]
+        const  float lapse = 0.0065f;             // Standard lapse rate                  [ K/m ]
+        const  float gas_const = 8.314f;          // Gas constant                         [ J/kg*mol ]
+        const  float air_mass = 0.02895f;          // Molecular mass of air                [ kg/mol ]
 
     /**
      * @brief Units for metric conversion
