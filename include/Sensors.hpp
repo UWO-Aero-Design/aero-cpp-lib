@@ -106,25 +106,23 @@ public:
     };
 
     /**
+     * @brief Configure the GPS with user configuration
+     * 
+     * @param config user selected GPS configuration
+     */
+    void config( GPS::Config_t& config )
+    {
+        m_config = config;
+        init();
+    }
+
+    /**
      * @brief Initializes the GPS
      * 
      * @return true if initialization was successful
      * @return false if initialization was unsuccessful
      */
     virtual bool init( ) = 0;
-
-    /**
-     * @brief Initializes the GPS with user configuration
-     * 
-     * @param config user selected GPS configuration
-     * @return true if initialization was successful
-     * @return false if initialization was unsuccessful
-     */
-    bool init( GPS::Config_t config )
-    {
-        m_config = config;
-        init();
-    }
 
     /**
      * @brief Update the GPS data
