@@ -88,7 +88,6 @@ namespace teensy35
     Pin P16 = 16;
     Pin P17 = 17;
     Pin P18 = 18;
-    Pin P18 = 18;
     Pin P19 = 19;
     Pin P20_PWM = 20;
     Pin P21_PWM = 21;
