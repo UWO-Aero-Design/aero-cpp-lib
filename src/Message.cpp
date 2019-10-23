@@ -107,8 +107,8 @@ RawMessage_t Message::build( ID from, ID to, bool clear )
     RawMessage_t message = {0, 0, 0, NULL, 0, 0, 0};
 
     // Set start and stop
-    message.start = 0x0A;
-    message.end = 0x0F;
+    message.start = def::START_BYTE;
+    message.end = def::END_BYTE;
 
     // Determine from and to for link
     uint8_t from_id = static_cast< int >( from );

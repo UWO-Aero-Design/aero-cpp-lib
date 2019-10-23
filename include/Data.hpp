@@ -172,9 +172,9 @@ enum class Signature{ Pitot, IMU, GPS, Enviro, Batt, Config, Status, Actuators, 
 enum class ID{ Gnd, Plane, G1, G2 };
 
 /** @brief Start byte definition for serial communications */
-const uint16_t START_BYTE = 0x0A; 
+const uint8_t START_BYTE = 0xAA; 
 /** @brief Stop byte definition for serial communications */
-const uint16_t END_BYTE = 0x0F;   
+const uint8_t END_BYTE = 0xFF;   
 
 /**
  * @brief Raw message struct used to represent a unparsed message
@@ -185,8 +185,9 @@ struct __attribute__((__packed__)) RawMessage_t
     uint16_t link;       // Link describes the connection the message is trying to bridge. Sender --> Recipient
     uint16_t signature;  // Bits for determining what data is being sent
 
-    uint8_t buffer[256]; // Actual data. Max size
     uint8_t length;
+    uint8_t buffer[256]; // Actual data. Max size
+    
 
     uint16_t crc;        // Try fast crc
     uint8_t end;         // End byte for serial transfer
