@@ -186,7 +186,7 @@ struct __attribute__((__packed__)) RawMessage_t
     uint16_t signature;  // Bits for determining what data is being sent
 
     uint8_t length;
-    uint8_t buffer[256]; // Actual data. Max size
+    uint8_t buffer[200]; // Actual data. Max size
     
 
     uint16_t crc;        // Try fast crc
