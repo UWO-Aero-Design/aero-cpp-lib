@@ -95,6 +95,7 @@ protected:
  */
 class GPS
 {
+public:
     /** @brief Defines configuration data for the GPS */
     struct Config_t
     {
@@ -159,6 +160,7 @@ protected:
  */
 class Pitot
 {
+public:
     /** @brief Defines configuration data for the pitot tube */
     struct Config_t
     {
@@ -221,6 +223,7 @@ protected:
  */
 class EnviroSensor
 {
+public:
     /** @brief Defines configuration data for the environmental sensor */
     struct Config_t
     {
