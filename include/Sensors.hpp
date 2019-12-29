@@ -79,7 +79,7 @@ public:
     /**
      * @brief Destructor
      */
-    virtual ~IMU();
+    virtual ~IMU(){}
 
 protected:
     // Hidden constructor that only children can redefine
@@ -144,7 +144,7 @@ public:
     /**
      * @brief Destructor
      */
-    virtual ~GPS();
+    virtual ~GPS(){}
 
 protected:
     // Hidden constructor that only children can redefine
@@ -207,7 +207,7 @@ public:
     /**
      * @brief Destructor
      */
-    virtual ~Pitot();
+    virtual ~Pitot(){}
 
 protected:
     // Hidden constructor that only children can redefine
@@ -270,7 +270,7 @@ public:
     /**
      * @brief Destructor
      */
-    virtual ~EnviroSensor();
+    virtual ~EnviroSensor(){}
 
 protected:
     // Hidden constructor that only children can redefine
