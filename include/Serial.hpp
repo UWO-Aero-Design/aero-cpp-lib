@@ -40,8 +40,9 @@ namespace
  * @param debug Default false. Set to true if you want function to print debug messages
  * @return ParsedMessage Result is a parsed message according to our message standard
  */
-ParsedMessage read_msg( Stream& port, bool debug = false )
+ParsedMessage_t read_msg( Stream& port, bool debug = false )
 {
+    Message messageHandler;
     // Boolean flags for reading data
     bool started = false, ended = false, filled = false;
     // Buffer setup
@@ -57,13 +58,13 @@ ParsedMessage read_msg( Stream& port, bool debug = false )
         // If byte is start byte and we havent reached the start byte yet
         if( in_byte == START_BYTE && started == false )
         {
-            buffer[ index++ ] = in_byte;
+            buffer[ buf_index++ ] = in_byte;
             started = true;
         }
         // If byte is end byte and we have reached the start but not the end
         else if( in_byte == END_BYTE && started == true && ended == false )
         {
-            buffer[ index++ ] = in_byte;
+            buffer[ buf_index++ ] = in_byte;
             ended = true;
         }
         // If the byte is not the end byte
@@ -71,19 +72,19 @@ ParsedMessage read_msg( Stream& port, bool debug = false )
         {
             if( buf_index < BUFFER_SPACE - 1)
             {
-                buffer[ index++ ] = in_byte;
+                buffer[ buf_index++ ] = in_byte;
             }
         }
 
         // We have gotten a full message if both started and ended are true
         if( started == true && ended == true )
         {
-            return messageHandler.parse((uint8_t *)_buffer);
+            return messageHandler.parse((uint8_t *) buffer);
         }
     }
 
     // Return an empty parsed message if buffer did not fill up
-    ParsedMessage failed;
+    ParsedMessage_t failed;
     return failed;
 }
 
@@ -119,6 +120,3 @@ void monitor( Stream& src, Stream& target )
 /*! @} End of Doxygen Groups*/
 
 #endif
-
-
-
