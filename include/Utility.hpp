@@ -39,7 +39,7 @@ namespace bit
      * @return T swapped endian order value
      */
     template <typename T>
-    T swap_endian( T to_swap )
+    inline T swap_endian( T to_swap )
     {
         union
         {
@@ -63,7 +63,7 @@ namespace bit
      * @param index Position of bit you want to set
      * @return int Value with bit at index set
      */
-    int set( int value, unsigned int index )
+    inline int set( int value, unsigned int index )
     {
         return ( value | ( 1 << index ) );
     }
@@ -75,7 +75,7 @@ namespace bit
      * @param index Position of bit you want to read
      * @return uint8_t Value of bit at position index in value
      */
-    uint8_t read( int value, unsigned int index )
+    inline uint8_t read( int value, unsigned int index )
     {
         return ( ( value >> index ) & 0x01 );
     }
@@ -87,7 +87,7 @@ namespace bit
      * @param index Position of bit you want to clear
      * @return int Value with bit at index cleared
      */
-    int clear( int value, unsigned int index )
+    inline int clear( int value, unsigned int index )
     {
         return ( value & ~( 1 << index ) );
     }
@@ -99,7 +99,7 @@ namespace bit
      * @param index Position of bit you want to toggle
      * @return int Value with bit at index toggled
      */
-    int toggle( int value, unsigned int index )
+    inline int toggle( int value, unsigned int index )
     {
         return ( value ^ ( 0x01 << index ) );
     }
@@ -143,7 +143,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param dest Unit you want the value to have
      * @return float Value with new metric prefix
      */
-    float metric( float value, Unit src, Unit dest )
+    inline float metric( float value, Unit src, Unit dest )
     {
         int exponent = static_cast< int >( src ) - static_cast< int >( dest );
         return value * powf( 1000.0f, exponent );
@@ -155,7 +155,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param diff_pressure Differential pressure in Pa
      * @return float Resulting calibrated air speed
      */
-    float cal_as( float diff_pressure )
+    inline float cal_as( float diff_pressure )
     {
         return (sl_sound_speed * sqrtf( 5.0f * ( powf( ( ( diff_pressure / sl_pressure ) + 1.0f ), ( 2.0f/7.0f ) ) - 1.0f ) ) );
     }
@@ -167,7 +167,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param pressure Static pressure in Pa
      * @return float Resulting equivalent air speed
      */
-    float equiv_as( float diff_pressure, float pressure ) 
+    inline float equiv_as( float diff_pressure, float pressure ) 
     {
         return sl_sound_speed * sqrtf(5.0f*pressure/sl_pressure*(powf((diff_pressure/pressure + 1.0f),(2.0f/7.0f)) - 1.0f));
     }
@@ -179,7 +179,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param temperature Air temperature in Celsuis
      * @return float Resulting equivalent true air speed 
      */
-    float true_as( float airspeed, float temperature ) 
+    inline float true_as( float airspeed, float temperature ) 
     {
         return airspeed * sqrtf((temperature+273.15f)/sl_temperature);
     }
@@ -190,7 +190,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param pressure Static Pressure in Pa
      * @return float Resulting pressure altitude
      */
-    float pressure_altitude( float pressure ) 
+    inline float pressure_altitude( float pressure ) 
     {
         return (sl_temperature/lapse)*(1.0f - powf((pressure/sl_pressure),((lapse*gas_const)/(air_mass*gravity))));
     }
@@ -202,7 +202,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param offset Level offset in m
      * @return float Resulting above ground level altitude in m
      */
-    float above_gnd_altitude( float pressure, float offset ) 
+    inline float above_gnd_altitude( float pressure, float offset ) 
     {
         return pressure_altitude( pressure ) - offset;
     }
@@ -214,7 +214,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param start_alt Start altitude of flight in m
      * @return float Resulting mean sea level altitude
      */
-    float mean_sl_altitude( float agl, float start_alt ) 
+    inline float mean_sl_altitude( float agl, float start_alt ) 
     {
         return agl + start_alt;
     }
@@ -226,7 +226,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param temperature Temperature in Celsius
      * @return float Resulting density altitude
      */
-    float density_altitude( float pressure, float temperature ) 
+    inline float density_altitude( float pressure, float temperature ) 
     {
         return (sl_temperature/lapse)*(1.0f - powf(((pressure/sl_pressure)*(sl_temperature/(temperature+273.15f))),((lapse*gas_const)/(air_mass*gravity - lapse*gas_const))));
     }
@@ -238,7 +238,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param altitude Altitude in m
      * @return float Approximate temperature at altitude
      */
-    float approx_temp( float temperature, float altitude ) 
+    inline float approx_temp( float temperature, float altitude ) 
     {
         return temperature - lapse*altitude;
     }
@@ -250,7 +250,7 @@ namespace convert // Credit goes to github.com/bolderflight/AirData
      * @param temperature Temperature in Celsius
      * @return float Resulting air density
      */
-    float approx_density( float pressure, float temperature ) 
+    inline float approx_density( float pressure, float temperature ) 
     {
         return (air_mass*pressure)/(gas_const*(temperature+273.15f));
     }
@@ -272,7 +272,7 @@ namespace print
      * @param buf char buffer of bytes
      * @param len Length of buffer to print
      */
-    void print_hex( char* buf, int len )
+    inline void print_hex( char* buf, int len )
     {
         for( size_t i = 0; i < len; ++i )
         {
@@ -288,7 +288,8 @@ namespace print
                     Serial.print( " " );
                 #endif
             #else
-                std::cout << std::hex << " ";
+                // TODO: FIX
+                // std::cout << std::hex << " ";
             #endif
         }
     }

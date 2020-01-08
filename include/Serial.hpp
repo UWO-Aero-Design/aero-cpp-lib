@@ -40,7 +40,7 @@ namespace
  * @param debug Default false. Set to true if you want function to print debug messages
  * @return ParsedMessage Result is a parsed message according to our message standard
  */
-ParsedMessage_t read_msg( Stream& port, bool debug = false )
+inline ParsedMessage_t read_msg( Stream& port, bool debug = false )
 {
     Message messageHandler;
     // Boolean flags for reading data
@@ -98,7 +98,7 @@ ParsedMessage_t read_msg( Stream& port, bool debug = false )
  * @param src Serial port to provide data from the source
  * @param target Serial port to provide data from the target
  */
-void monitor( Stream& src, Stream& target )
+inline void monitor( Stream& src, Stream& target )
 {
     if( src.available() )
     {
