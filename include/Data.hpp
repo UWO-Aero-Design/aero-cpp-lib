@@ -72,8 +72,7 @@ struct __attribute__((__packed__)) GPS_t
  */
 struct __attribute__((__packed__)) Enviro_t
 {
-    uint16_t pressure;
-    uint16_t humidity;
+    uint16_t altitude;
     uint16_t temperature; 
 };
 
