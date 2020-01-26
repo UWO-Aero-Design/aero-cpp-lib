@@ -268,6 +268,12 @@ struct __attribute__((__packed__)) ParsedMessage_t
         return reinterpret_cast<AirData_t*>( segments[ index ] );
     }
 
+    Commands_t* cmds( void ) const
+    {
+        int index = static_cast<int>(Signature::Cmds);
+        return reinterpret_cast<Commands_t*>( segments[ index ] );
+    }
+
     DropAlgo_t* drop_algo( void ) const
     {
         int index = static_cast<int>(Signature::Drop);
