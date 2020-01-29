@@ -137,7 +137,7 @@ public:
      * @param message valid buffer to be parsed
      * @return ParsedMessage parsed message 
      */
-    def::ParsedMessage_t parse( const uint8_t* message );
+    def::ParsedMessage_t* parse( const uint8_t* message );
 
 protected:
 private:
@@ -145,6 +145,12 @@ private:
     void set( def::Signature buf_segment, uint8_t* data );
     uint8_t segment_size( def::Signature buf_segment );
     uint16_t chk_sum( const def::RawMessage_t& message );
+
+
+    def::ParsedMessage_t *result;
+
+    
+
 
     // Array to store each struct as buffer segments
     uint8_t* buffer_segments[12];

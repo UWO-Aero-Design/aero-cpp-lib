@@ -21,6 +21,13 @@ Message::Message( void )
     {
         buffer_segments[i] = NULL;
     }
+
+    result = new ParsedMessage_t();
+
+    for(int i = 0; i < 12; i++) {
+        int size = segment_size( static_cast<Signature>(i) );
+        result->segments[i] = new uint8_t[size];
+    }
 }
 
 // Add pitot to buffer
@@ -164,17 +171,17 @@ bool Message::validate( const uint8_t* message )
 }
 
 // Parse valid buffer
-ParsedMessage_t Message::parse( const uint8_t* message )
+ParsedMessage_t* Message::parse( const uint8_t* message )
 {
     // Message to parse
     RawMessage_t* msg = ( RawMessage_t* ) message;
 
     // Message to parse result into
-    ParsedMessage_t result;
+    // ParsedMessage_t result;
 
     // Set from and to values.
-    result.m_from = (static_cast< ID >( ( msg->link >> 8)  ) ); // Extract upper byte
-    result.m_to = (static_cast< ID >( msg->link & 0xFF ) );     // Extract lower byte
+    result->m_from = (static_cast< ID >( ( msg->link >> 8)  ) ); // Extract upper byte
+    result->m_to = (static_cast< ID >( msg->link & 0xFF ) );     // Extract lower byte
 
     int signature = msg->signature;
     int length = 0;
@@ -186,14 +193,12 @@ ParsedMessage_t Message::parse( const uint8_t* message )
         {
             // Grab size of struct to parse
             int size = segment_size( static_cast<Signature>(i) );
-            // Allocate size for segment buffer
-            result.segments[i] = new uint8_t[size];
             // Copy raw buffer into results
-            memcpy( result.segments[i], msg->buffer+length, size );
+            memcpy( result->segments[i], msg->buffer+length, size );
             length += size;
         }
         else
-            result.segments[i] = NULL;
+            result->segments[i] = NULL;
         
         // Shift signature over to keep checking LSBs
         signature >>= 1;
