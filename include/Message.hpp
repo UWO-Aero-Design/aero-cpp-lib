@@ -23,6 +23,8 @@ public:
      * @brief Construct a new Message object
      */
     Message( void );
+
+    ~Message( void );
     
     /**
      * @brief Add pitot data to the message buffer

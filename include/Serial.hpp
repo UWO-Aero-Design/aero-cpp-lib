@@ -59,7 +59,7 @@ inline int msg_contents(char* buf) {
  */
 inline bool check_for_msg( Stream& port, bool debug = false )
 {
-    Message messageHandler;
+    
     // Boolean flags for reading data
     bool started = false, ended = false, filled = false;
     // Reset buffer index
@@ -69,19 +69,22 @@ inline bool check_for_msg( Stream& port, bool debug = false )
     while( port.available() )
     {
         char in_byte = port.read();
-
+        // Serial.println(in_byte);
         // If byte is start byte and we havent reached the start byte yet
         if( in_byte == def::START_BYTE && started == false )
         {
             buffer[ buf_index++ ] = in_byte;
             started = true;
+            // Serial.println("Reached start");
         }
 
         // If byte is end byte and we have reached the start but not the end
         else if( in_byte == def::END_BYTE && buf_index == MSG_SIZE - 1 && started == true && ended == false )
+        //else if( in_byte == def::END_BYTE && started == true && ended == false )
         {
             buffer[ buf_index++ ] = in_byte;
             ended = true;
+            // Serial.println("Reached end");
         }
         // If the byte is not the end byte
         else if( started == true && ended == false )
@@ -95,6 +98,7 @@ inline bool check_for_msg( Stream& port, bool debug = false )
         // We have gotten a full message if both started and ended are true
         if( started == true && ended == true )
         {
+            // Serial.println("Reached full");
             return true;
         }
     }

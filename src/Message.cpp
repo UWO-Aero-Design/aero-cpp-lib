@@ -13,6 +13,14 @@ namespace aero
 // Using namespace to clean up the code
 using namespace def;
 
+Message::~Message( void ) {
+    for(int i = 0; i < 12; i++) {
+        delete(result->segments[i]);
+    }
+
+    delete(result);
+}
+
 // Default constructor
 Message::Message( void )
 {
