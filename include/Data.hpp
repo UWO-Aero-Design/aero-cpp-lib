@@ -84,6 +84,16 @@ struct Battery_t
 };
 
 /**
+ * @brief Raw radio data
+ */
+struct Radio_t
+{
+    float rssi;
+    int32_t frequencyError;
+    int32_t snr;
+};
+
+/**
  * @brief Configuration data
  */
 struct SystemConfig_t

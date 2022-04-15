@@ -281,6 +281,79 @@ protected:
     EnviroSensor::Config_t m_config; // For environmental sensor configuration
 };
 
+/**
+ * @brief Abstract radio sensor definition
+ */
+class Radio
+{
+public:
+    /**
+     * @brief Initializes the radio 
+     * 
+     * @return true if initialization was successful
+     * @return false if initialization was unsuccessful
+     */
+    virtual bool init( ) = 0;
+
+    /**
+     * @brief Update the radio data for messages
+     * 
+     * @return true if update was successful
+     * @return false if update was unsuccessful
+     */
+    virtual bool update() = 0;
+
+    /**
+     * @brief Check if there is a new message
+     * 
+     * @return true if there is a message
+     * @return false if there are no new messages
+     */
+    virtual bool ready() = 0;
+
+    /**
+     * @brief Receive a new message if ready
+     * 
+     * @param buf the buffer to receive into
+     * @param len the number of bytes received
+     * 
+     * @return true if successful read
+     * @return false if unsuccessful read
+     */
+    virtual bool receive(uint8_t* buf, uint8_t *len) = 0;
+
+    /**
+     * @brief Send a message over the radio 
+     * 
+     * @param buf the buffer to send
+     * @param len the size of the buffer
+     * 
+     * @return true if packet send was successful
+     * @return false if packet send was unsuccessful
+     */
+    virtual bool send(uint8_t* buf, uint8_t len) = 0;
+
+    /**
+     * @brief Get radio sensor data
+     * 
+     * @return const def::Radio_t& reference to radio's data struct
+     */
+    const def::Radio_t& data(void) { return m_data; }
+
+    /**
+     * @brief Destructor
+     */
+    virtual ~Radio(){}
+
+protected:
+    // Hidden constructor that only children can redefine
+    Radio(){}
+
+    // Member variables
+    def::Radio_t m_data;      // For environmental sensor data
+    size_t RECEIVE_BUFFER_SIZE;
+};
+
 } // End of namespace sensor
 
 /*! @} End of Doxygen Groups*/
